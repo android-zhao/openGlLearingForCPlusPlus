@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="OpenGlLearn"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/Users/didi/code/Clion/OpenGlLearn/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/opt/local/bin/gmake -j8 -f &quot;/Users/didi/code/Clion/OpenGlLearn/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/opt/local/bin/gmake -j8 -f &quot;/Users/didi/code/Clion/OpenGlLearn/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/opt/local/bin/gmake -j8 -f &quot;/Users/didi/code/Clion/OpenGlLearn/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/opt/local/bin/gmake -j8 -f &quot;/Users/didi/code/Clion/OpenGlLearn/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/Users/didi/code/Clion/OpenGlLearn/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/opt/local/bin/gmake -j8 -f &quot;/Users/didi/code/Clion/OpenGlLearn/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/opt/local/bin/gmake -j8 -f &quot;/Users/didi/code/Clion/OpenGlLearn/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/opt/local/bin/gmake -j8 -f &quot;/Users/didi/code/Clion/OpenGlLearn/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/opt/local/bin/gmake -j8 -f &quot;/Users/didi/code/Clion/OpenGlLearn/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/Users/didi/code/Clion/OpenGlLearn/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/opt/local/bin/gmake -j8 -f &quot;/Users/didi/code/Clion/OpenGlLearn/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/opt/local/bin/gmake -j8 -f &quot;/Users/didi/code/Clion/OpenGlLearn/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/opt/local/bin/gmake -j8 -f &quot;/Users/didi/code/Clion/OpenGlLearn/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/opt/local/bin/gmake -j8 -f &quot;/Users/didi/code/Clion/OpenGlLearn/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="openGlTest">
+				<Option output="/Users/didi/code/Clion/OpenGlLearn/cmake-build-debug/openGlTest" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/didi/code/Clion/OpenGlLearn/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/local/Cellar/glew/2.2.0_1/include/GL"/>
+					<Add directory="/usr/local/Cellar/glfw/3.3.4/include/GLFW"/>
+					<Add directory="/Users/didi/code/Clion/openGlTest/glm"/>
+					<Add directory="/Users/didi/code/Clion/openGlTest/glm/gtc"/>
+					<Add directory="/Users/didi/code/Clion/openGlTest/glm/detail"/>
+					<Add directory="/Users/didi/code/Clion/openGlTest/glm/ext"/>
+					<Add directory="/Users/didi/code/Clion/openGlTest/glm/gtx"/>
+					<Add directory="/Users/didi/code/Clion/openGlTest/glm/simd"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/13.0.0/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/opt/local/bin/gmake -j8 -f &quot;/Users/didi/code/Clion/OpenGlLearn/cmake-build-debug/Makefile&quot;  VERBOSE=1 openGlTest"/>
+					<CompileFile command="/opt/local/bin/gmake -j8 -f &quot;/Users/didi/code/Clion/OpenGlLearn/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/opt/local/bin/gmake -j8 -f &quot;/Users/didi/code/Clion/OpenGlLearn/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/opt/local/bin/gmake -j8 -f &quot;/Users/didi/code/Clion/OpenGlLearn/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="openGlTest/fast">
+				<Option output="/Users/didi/code/Clion/OpenGlLearn/cmake-build-debug/openGlTest" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/didi/code/Clion/OpenGlLearn/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/local/Cellar/glew/2.2.0_1/include/GL"/>
+					<Add directory="/usr/local/Cellar/glfw/3.3.4/include/GLFW"/>
+					<Add directory="/Users/didi/code/Clion/openGlTest/glm"/>
+					<Add directory="/Users/didi/code/Clion/openGlTest/glm/gtc"/>
+					<Add directory="/Users/didi/code/Clion/openGlTest/glm/detail"/>
+					<Add directory="/Users/didi/code/Clion/openGlTest/glm/ext"/>
+					<Add directory="/Users/didi/code/Clion/openGlTest/glm/gtx"/>
+					<Add directory="/Users/didi/code/Clion/openGlTest/glm/simd"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/13.0.0/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/opt/local/bin/gmake -j8 -f &quot;/Users/didi/code/Clion/OpenGlLearn/cmake-build-debug/Makefile&quot;  VERBOSE=1 openGlTest/fast"/>
+					<CompileFile command="/opt/local/bin/gmake -j8 -f &quot;/Users/didi/code/Clion/OpenGlLearn/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/opt/local/bin/gmake -j8 -f &quot;/Users/didi/code/Clion/OpenGlLearn/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/opt/local/bin/gmake -j8 -f &quot;/Users/didi/code/Clion/OpenGlLearn/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/Users/didi/code/Clion/OpenGlLearn/src/main.cpp">
+			<Option target="openGlTest"/>
+		</Unit>
+		<Unit filename="/Users/didi/code/Clion/OpenGlLearn/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
