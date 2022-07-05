@@ -1,9 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 project(OpenGlLearn)
 
-
-
-
 set(CMAKE_CXX_STANDARD 14)
 
 # 添加头文件
@@ -38,7 +35,15 @@ link_libraries("-framework OpenGL" ${GLEW_LINK} ${GLFW_LINK})
 
 # 执行编译命令
 set(SOURCE_FILES
-        src/main.cpp)
+        src/main.cpp
+        )
+#set(SOURCE_FILES
+#        src/MainTest.cpp
+#        )
+#set(SOURCE_FILES
+#        src/MainCompare.cpp
+#        )
+
 add_executable(openGlTest ${SOURCE_FILES})
 
 
