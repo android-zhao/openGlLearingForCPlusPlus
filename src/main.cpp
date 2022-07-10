@@ -1,6 +1,7 @@
 #include <iostream>
-#include "glew.h"
-#include "glfw3.h"
+
+#include "../include/GLFW/glfw3.h"
+#include "../include/glad/glad.h"
 
 using namespace std;
 
@@ -157,11 +158,16 @@ int main() {
 
     if(!glfwInit())
         return -1;
-
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR,3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR,3);
     glfwWindowHint(GLFW_OPENGL_PROFILE ,GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);//
+
+#ifdef __APPLE__
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
+
+
+//    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);//
 
     //创建窗口以及上下文,窗口大小为960 * 540，这个值可以随便更改，电脑会根据你配置的值生成对应大小的窗口显示器
     GLFWwindow* window = glfwCreateWindow(960, 540, "hello opengl", NULL, NULL);
@@ -169,6 +175,7 @@ int main() {
     {
         //创建失败会返回NULL
         glfwTerminate();
+        std::cout << "create window failed" << std::endl;
         return -1;
     }
     glfwMakeContextCurrent (window);
@@ -176,12 +183,26 @@ int main() {
     // Set the required callback functions
     glfwSetKeyCallback(window, key_callback);
 
+    /********
+     MAC系统采用的是glew 和 glfw 在PC上绘制 因此采用mac 操作系统时 需要采用glewInit 方法将opengl的程序起起来
     // Set this to true so GLEW knows to use a modern approach to retrieving function pointers and extensions
-    glewExperimental = GL_TRUE;
+    //  glewExperimental = GL_TRUE;
 
-    int result = glewInit();
-    cout << "result : "<<result<<endl;
-    cout << "gl version "<<glGetString(GL_VERSION)<<endl;
+    //    int result = glewInit();
+    //    cout << "result : "<<result<<endl;
+    //    cout << "gl version "<<glGetString(GL_VERSION)<<endl;
+     ************/
+
+    /********
+     * window 操作系统使用的是glad 和 glfw 来在 PC加载和使用opengl来显示，因此需要先使用 gladLoadGLLoader 来加载opengl程序
+     */
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+
+    {
+        std::cout << "Failed to initialize GLAD" << std::endl;
+        return -1;
+    }
+
 
     /*****************标准opengl 代码 在不同平台上 使用opengl 均需要以下代码*********************/
     //设置opengl窗口显示的原点和宽高，opengl的显示视图窗口和 我们上面创建的 window窗口一样大小

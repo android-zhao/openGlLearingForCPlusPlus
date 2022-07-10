@@ -1,53 +1,33 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.19)
+
 project(OpenGlLearn)
 
 set(CMAKE_CXX_STANDARD 14)
 
-# 添加头文件
-set(GLEW_H /usr/local/Cellar/glew/2.2.0_1/include/GL)
-set(GLFW_H /usr/local/Cellar/glfw/3.3.4/include/GLFW)
-include_directories(${GLEW_H} ${GLFW_H})
-
-set(GLM /Users/didi/code/Clion/openGlTest/glm/)
-include_directories(${GLM} ${GLM})
-
-set(GLM_GTC /Users/didi/code/Clion/openGlTest/glm/gtc)
-include_directories(${GLM_GTC} ${GLM_GTC})
-
-set(GLM_DETAIL /Users/didi/code/Clion/openGlTest/glm/detail)
-include_directories(${GLM_DETAIL} ${GLM_DETAIL})
-
-set(GLM_EXT /Users/didi/code/Clion/openGlTest/glm/ext)
-include_directories(${GLM_EXT} ${GLM_EXT})
-
-set(GLM_GTX /Users/didi/code/Clion/openGlTest/glm/gtx)
-include_directories(${GLM_GTX} ${GLM_GTX})
-
-set(GLM_SIMD /Users/didi/code/Clion/openGlTest/glm/simd)
-include_directories(${GLM_SIMD} ${GLM_SIMD})
-
-
-# 添加目标链接
-set(GLEW_LINK /usr/local/Cellar/glew/2.2.0_1/lib/libGLEW.2.2.dylib)
-set(GLFW_LINK /usr/local/Cellar/glfw/3.3.4/lib/libglfw.3.dylib)
-#link_libraries(${OPENGL} ${GLEW_LINK} ${GLFW_LINK})
-link_libraries("-framework OpenGL" ${GLEW_LINK} ${GLFW_LINK})
+INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/include)
+link_directories(${PROJECT_SOURCE_DIR}/lib)
 
 # 执行编译命令
 set(SOURCE_FILES
         src/main.cpp
+        src/glad.c
+#        src/MainDemo.cpp
         )
+
 #set(SOURCE_FILES
 #        src/MainTest.cpp
 #        )
-#set(SOURCE_FILES
-#        src/MainCompare.cpp
-#        )
 
-add_executable(openGlTest ${SOURCE_FILES})
+add_executable(OpenGlLearn ${SOURCE_FILES})
+#add_executable(OpenGlLearn src/MainDemo.cpp)
 
 
-if (APPLE)
-    target_link_libraries(openGlTest "-framework OpenGL")
-    target_link_libraries(openGlTest "-framework GLUT")
-endif()
+
+
+#方法一和方法二 取任何一个即可
+#方法一：采用动态库 需要在cmake-build-debug 文件夹下面将glfw3.dll copy过去
+#target_link_libraries(OpenGlLearn  -lopengl32  ${PROJECT_SOURCE_DIR}/lib/glfw3.dll)
+
+#方法二：或者采用静态库 将 libglfw3.a 和 libglfw3dll.a 直接打包到程序中
+target_link_libraries(OpenGlLearn  -lopengl32  ${PROJECT_SOURCE_DIR}/lib/libglfw3.a)
+target_link_libraries(OpenGlLearn  -lopengl32 ${PROJECT_SOURCE_DIR}/lib/libglfw3dll.a)
