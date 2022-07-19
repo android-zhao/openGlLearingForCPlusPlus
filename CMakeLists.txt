@@ -9,14 +9,25 @@ link_directories(${PROJECT_SOURCE_DIR}/lib)
 
 # 执行编译命令
 set(SOURCE_FILES
-        src/main.cpp
+        #系列1
+#        src/main.cpp
         src/glad.c
 #        src/MainDemo.cpp
+        #系列2
+        src/opengl_main_texture.cpp
+#        src/MainTest.cpp
+        src/Utils.cpp
+        src/Utils.h
         )
 
 #set(SOURCE_FILES
 #        src/MainTest.cpp
 #        )
+#set(SOURCE_FILES
+#        src/Utils.cpp
+#        src/Utils.h
+#        )
+
 
 add_executable(OpenGlLearn ${SOURCE_FILES})
 #add_executable(OpenGlLearn src/MainDemo.cpp)

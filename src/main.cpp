@@ -1,34 +1,36 @@
 #include <iostream>
 
-#include "../include/GLFW/glfw3.h"
-#include "../include/glad/glad.h"
+//#include "../include/GLFW/glfw3.h"
+//#include "../include/glad/glad.h"
+#include "Utils.h"
 
 using namespace std;
 
-void GlClearError();
+//void GlClearError();
+//
+//bool GlLogCall(const char* fun,const char* file,int  line);
+//
+//#define ASSERT(x) if(!(x) ) cout<<"file:"<<__FILE__<<",LINE:"<<__LINE__<<",FUNC："<<__FUNCTION__ <<endl;
+//
+////检测错误的宏定义
+//# define GLCall(x) GlClearError(); \
+//x;                            \
+//ASSERT(GlLogCall(#x,__FILE__,__LINE__))
 
-bool GlLogCall(const char* fun,const char* file,int  line);
 
-#define ASSERT(x) if(!(x) ) cout<<"file:"<<__FILE__<<",LINE:"<<__LINE__<<",FUNC："<<__FUNCTION__ <<endl;
-
-//检测错误的宏定义
-# define GLCall(x) GlClearError(); \
-x;                            \
-ASSERT(GlLogCall(#x,__FILE__,__LINE__))
-
-void GlClearError()
-{
-    while (glGetError() != GL_NO_ERROR);
-}
-
-bool GlLogCall(const char *fun, const char *file, int line) {
-    while (GLenum error = glGetError()){
-        cout<<"OpenGl Error:" <<error<<endl;
-        cout<<"file:"<<file<<",LINE:"<<line<<",FUNC："<<fun <<endl;
-        return false;
-    }
-    return true;
-}
+//void GlClearError()
+//{
+//    while (glGetError() != GL_NO_ERROR);
+//}
+//
+//bool GlLogCall(const char *fun, const char *file, int line) {
+//    while (GLenum error = glGetError()){
+//        cout<<"OpenGl Error:" <<error<<endl;
+//        cout<<"file:"<<file<<",LINE:"<<line<<",FUNC："<<fun <<endl;
+//        return false;
+//    }
+//    return true;
+//}
 
 
 //顶点着色器脚本

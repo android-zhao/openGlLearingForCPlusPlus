@@ -3,6 +3,8 @@
 //
 
 #include "iostream"
+#include "Utils.h"
+#include "string"
 
 using namespace std;
 
@@ -34,7 +36,11 @@ int main() {
     cout<<"int array:" <<sizeof (test2)<< endl;
 
     testPointer(test1,test2);
+
 //    testArray(test1,2);
 
-
+    Utils utils;
+    string path = "D:\\code\\clion_workspace\\openGlLearingForCPlusPlus\\glsl\\cpp_vertex.glsl";
+    string result = utils.readShaderFromFile(const_cast<char *>(path.c_str()));
+    cout <<"result:" << result<<endl;
 }
