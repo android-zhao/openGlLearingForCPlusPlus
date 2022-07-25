@@ -10,8 +10,15 @@
 
 using namespace std;
 
-void createOpenglElement(int &vaoId,int &vboId,int &iboId,float *vertex,int vertexLength,int * index,int indexLength);
+void createOpenglElement(unsigned  int * vaoId,unsigned int * vboId,unsigned int *iboId ,
+                         float *vertex, int vertexLength, int * index, int indexLength);
 
+//void initVertexConfiguration(float * vertexArray,int vertexArrayLength, int * index,int indexLength);
+
+
+static unsigned  int VAO = 0;
+static unsigned  int VBO = 0;
+static unsigned  int EBO = 0;
 
 void processInput(GLFWwindow *window)
 {
@@ -99,15 +106,17 @@ int main() {
             1, 2, 3   // second Triangle
     };
 
-    int vaoId = -1;
-    int vboId = -1;
-    int iboId = -1;
-    createOpenglElement(vaoId, vboId, iboId, vertices, (sizeof (vertices)/sizeof (float)) ,
+    unsigned  int vaoId = 99;
+    unsigned int vboId = 99;
+    unsigned int eboId = 99;
+
+    createOpenglElement(&vaoId,&vboId,&eboId,vertices, (sizeof (vertices)/sizeof (float)) ,
                         indices, (sizeof (indices) / sizeof (int )));
+//    initVertexConfiguration(vertices,12,indices,6);
 
     cout<<"vaoId: " <<vaoId<<endl;
     cout<<"vboId: " <<vboId<<endl;
-    cout<<"iboId: " <<iboId<<endl;
+    cout<<"iboId: " <<eboId<<endl;
 
     while (!glfwWindowShouldClose(window))
     {
@@ -129,10 +138,11 @@ int main() {
         GLCall(glfwPollEvents());
     }
 
+    //reinterpret_cast 强制转换
     //删除
-    glDeleteVertexArrays(1, reinterpret_cast<const GLuint *>(&vaoId));
-    glDeleteBuffers(1, reinterpret_cast<const GLuint *>(&vboId));
-    glDeleteBuffers(1, reinterpret_cast<const GLuint *>(&iboId));
+    glDeleteVertexArrays(1,&vaoId);
+    glDeleteBuffers(1, &vboId);
+    glDeleteBuffers(1, &eboId);
     glDeleteProgram(renderId);
     /*****************标准opengl 代码 在不同平台上 使用opengl 均需要以上代码*********************/
 
@@ -142,22 +152,27 @@ int main() {
     return 0;
 }
 
-void createOpenglElement(int &vaoId,int &vboId,int &eboId,float *vertex,int vertexLength,int * index,int indexLength){
-    GLCall( glGenVertexArrays(1, reinterpret_cast<GLuint *>(vaoId)));
-    GLCall( glGenBuffers(1, reinterpret_cast<GLuint *>(vboId)));
-    GLCall( glGenBuffers(1, reinterpret_cast<GLuint *>(eboId)));
+
+//注意传入的是指针，需要在opengl中使用指针和解指针
+
+void createOpenglElement(unsigned  int * vaoId,unsigned int * vboId,unsigned int *iboId ,
+                         float *vertex, int vertexLength, int * index, int indexLength)
+{
+    cout << "createOpenglElement :" << "vertexLength:" <<vertexLength << ",indexLength :" <<indexLength<<endl;
+    GLCall( glGenVertexArrays(1, vaoId));
+    GLCall( glGenBuffers(1, vboId));
+    GLCall( glGenBuffers(1, iboId));
 
     //绑定VAO VBO 和EBO
-    GLCall( glBindVertexArray(vaoId));
-    std::cout << "initVertexConfiguration   sizeof(vertexArray) : " <<  sizeof(vertex) << std::endl;
-    GLCall(glBindBuffer(GL_ARRAY_BUFFER, vboId));
-//    GLCall(glBufferData(GL_ARRAY_BUFFER, sizeof(vertexArray) * sizeof(float), (void *)vertexArray, GL_STATIC_DRAW));
+    GLCall( glBindVertexArray( *vaoId));
+    std::cout << "createOpenglElement   sizeof(vertexArray) : " <<  sizeof(vertex) << std::endl;
+    GLCall(glBindBuffer(GL_ARRAY_BUFFER, *vboId));
 //glBufferData 函数第二个参数 指的是 顶点坐标的长度
-    GLCall(glBufferData(GL_ARRAY_BUFFER, vertexLength, (void *)vertex, GL_STATIC_DRAW));
+    GLCall(glBufferData(GL_ARRAY_BUFFER, (vertexLength )*sizeof(float) , (void *)vertex, GL_STATIC_DRAW));
 
     std::cout << "initVertexConfiguration   sizeof(index : " <<  sizeof(index) << std::endl;
-    GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eboId));
-    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexLength, index, GL_STATIC_DRAW));
+    GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *iboId));
+    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexLength *sizeof(float), index, GL_STATIC_DRAW));
 
     //关键步骤，指定传递出去的数据之间的排列方式和数据大小 数据类型等
     GLCall(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0));
@@ -167,3 +182,36 @@ void createOpenglElement(int &vaoId,int &vboId,int &eboId,float *vertex,int vert
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 }
+
+
+
+
+
+
+
+//void initVertexConfiguration(float * vertexArray,int vertexArrayLength, int * index,int indexLength){
+//    //创建顶点缓存数组 VAO 顶点数组VBO 和元素缓存数组（元素缓存）EBO
+//    GLCall( glGenVertexArrays(1, &VAO));
+//    GLCall( glGenBuffers(1, &VBO));
+//    GLCall( glGenBuffers(1, &EBO));
+//
+//    //绑定VAO VBO 和EBO
+//    GLCall( glBindVertexArray(VAO));
+//    std::cout << "initVertexConfiguration   sizeof(vertexArray) : " <<  sizeof(vertexArray) << std::endl;
+//    GLCall(glBindBuffer(GL_ARRAY_BUFFER, VBO));
+////    GLCall(glBufferData(GL_ARRAY_BUFFER, sizeof(vertexArray) * sizeof(float), (void *)vertexArray, GL_STATIC_DRAW));
+////glBufferData 函数第二个参数 指的是 顶点坐标的长度
+//    GLCall(glBufferData(GL_ARRAY_BUFFER, vertexArrayLength, (void *)vertexArray, GL_STATIC_DRAW));
+//
+//    std::cout << "initVertexConfiguration   sizeof(index : " <<  sizeof(index) << std::endl;
+//    GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO));
+//    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexLength, index, GL_STATIC_DRAW));
+//
+//    //关键步骤，指定传递出去的数据之间的排列方式和数据大小 数据类型等
+//    GLCall(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0));
+//    GLCall(glEnableVertexAttribArray(0));
+//
+//    //解绑
+//    glBindBuffer(GL_ARRAY_BUFFER, 0);
+//    glBindVertexArray(0);
+//}
