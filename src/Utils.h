@@ -37,6 +37,10 @@ public:
     bool createAndCompileShader(char* shaderStr,int glsltype,int &shaderId);
     int linkProgram(int &vertexId,int &fragmentId);
 
+    int createTexture(string path);
+    void setUniform1i(int id,int value);
+    int getUninformId(int &renderId, const char *charName);
+
 };
 
 

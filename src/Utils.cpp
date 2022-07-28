@@ -7,6 +7,8 @@
 #include "iostream"
 #include "../include/GLFW/glfw3.h"
 #include "../include/glad/glad.h"
+#include "vender/stb_image.h"
+
 
 #include <string>
 #include <fstream>
@@ -110,4 +112,46 @@ string Utils::readShaderFromFile(char *vertexPath) {
     }
     return vertexCode;
 
+}
+
+
+int Utils::createTexture(string path) {
+
+    std::cout << "createTexture path" << path<<std::endl;
+    stbi_set_flip_vertically_on_load(true);
+    //加载图片
+    int width, height, nrChannels;
+    unsigned  char * data =  stbi_load(path.c_str(),&width,&height,&nrChannels,0);
+
+    unsigned int textureID ;
+    glGenTextures(1, &textureID);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+    //设置纹理模式
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    if (data)
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else
+    {
+        std::cout << "createTexture Failed to load texture" << std::endl;
+    }
+
+    stbi_image_free(data);
+    return textureID;
+
+}
+
+void Utils::setUniform1i(int id,int value) {
+    glUniform1i(id,value);
+}
+
+int Utils::getUninformId(int &renderId, const char *charName) {
+    int location = glGetUniformLocation(renderId,charName);
+    return location;
 }

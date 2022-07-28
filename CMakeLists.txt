@@ -18,6 +18,8 @@ set(SOURCE_FILES
 #        src/MainTest.cpp
         src/Utils.cpp
         src/Utils.h
+        src/vender/stb_image.cpp
+        src/vender/stb_image.h
         )
 
 #set(SOURCE_FILES

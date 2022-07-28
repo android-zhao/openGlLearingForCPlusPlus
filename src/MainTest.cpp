@@ -18,6 +18,9 @@ void testArray (float * testArray,int length)
     for(int i = 0;i<length;i++){
         cout << "testArray :" << testArray[i] <<endl;
     }
+
+
+
 }
 void testPointer(float * array,int *intArray){
     cout<<"testPointer float array pointer length : "<< sizeof(array)<<endl;
@@ -36,6 +39,16 @@ int main() {
     cout<<"int array:" <<sizeof (test2)<< endl;
 
     testPointer(test1,test2);
+
+
+    float vertices[] = {
+            // positions          // colors           // texture coords
+            0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
+            0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
+            -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
+            -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left
+    };
+    cout<< "size of vertices:" <<sizeof(vertices)<<endl;
 
 //    testArray(test1,2);
 

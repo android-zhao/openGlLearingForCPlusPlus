@@ -49,7 +49,9 @@ int main() {
 #endif
 
     //创建窗口以及上下文,窗口大小为960 * 540，这个值可以随便更改，电脑会根据你配置的值生成对应大小的窗口显示器
-    GLFWwindow* window = glfwCreateWindow(960, 540, "hello opengl", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(1280, 720, "hello opengl", NULL, NULL);
+//    GLFWwindow* window = glfwCreateWindow(580, 654, "hello opengl", NULL, NULL);
+
     if(!window)
     {
         //创建失败会返回NULL
@@ -79,6 +81,7 @@ int main() {
     Utils utils;
     string verTextShaderPath = "D:\\code\\clion_workspace\\openGlLearingForCPlusPlus\\glsl\\cpp_vertex.glsl";
     string fragmentPath = "D:\\code\\clion_workspace\\openGlLearingForCPlusPlus\\glsl\\cpp_fragment.glsl";
+
     string  vertexStr = utils.readShaderFromFile(const_cast<char *>(verTextShaderPath.c_str()));
     string  fragmentStr = utils.readShaderFromFile(const_cast<char *>(fragmentPath.c_str()));
 
@@ -93,11 +96,18 @@ int main() {
    int renderId =  utils.linkProgram(vertexId,fragmentId);
 
     //顶点坐标
+//    float vertices[] = {
+//            0.5f,  0.5f, 0.0f,  /* top right    //0  */ 1.0f, 1.0f, // top right
+//            0.5f, -0.5f, 0.0f,  /* bottom right //1  */ 1.0f, 0.0f, // bottom right
+//            -0.5f, -0.5f, 0.0f,  /* bottom left //2  */ 0.0f, 0.0f, // bottom left
+//            -0.5f,  0.5f, 0.0f ,  /* top left    //3  */ 0.0f, 1.0f  // top left
+//    };
+
     float vertices[] = {
-            0.5f,  0.5f, 0.0f,  // top right    //0
-            0.5f, -0.5f, 0.0f,  // bottom right //1
-            -0.5f, -0.5f, 0.0f,  // bottom left //2
-            -0.5f,  0.5f, 0.0f   // top left    //3
+            1.0f,  1.0f, 0.0f,  /* top right    //0  */ 1.0f, 1.0f, // top right
+            1.0f, -1.0f, 0.0f,  /* bottom right //1  */ 1.0f, 0.0f, // bottom right
+            -1.0f, -1.0f, 0.0f,  /* bottom left //2  */ 0.0f, 0.0f, // bottom left
+            -1.0f,  1.0f, 0.0f ,  /* top left    //3  */ 0.0f, 1.0f  // top left
     };
     //顶点坐标对应的索引坐标
     int indices[] = {
@@ -110,13 +120,22 @@ int main() {
     unsigned int vboId = 99;
     unsigned int eboId = 99;
 
-    createOpenglElement(&vaoId,&vboId,&eboId,vertices, (sizeof (vertices)/sizeof (float)) ,
+    createOpenglElement(&vaoId,&vboId,&eboId,vertices, (sizeof (vertices) /sizeof (float )) ,
                         indices, (sizeof (indices) / sizeof (int )));
-//    initVertexConfiguration(vertices,12,indices,6);
+    //生成纹理
+    string img_path = "D:\\code\\clion_workspace\\openGlLearingForCPlusPlus\\res\\tescat2.jpg";
+    unsigned  int textureId =  utils.createTexture(img_path);
 
+    //获取片元着色器中采样器的id并指令运行时纹理插槽位置
+    const string texName = "textureName";
+    int textLocation =  utils.getUninformId(renderId,texName.c_str());
+    utils.setUniform1i(textLocation,0);
+
+    cout<< "textureId:" << textureId << endl;
     cout<<"vaoId: " <<vaoId<<endl;
     cout<<"vboId: " <<vboId<<endl;
     cout<<"iboId: " <<eboId<<endl;
+
 
     while (!glfwWindowShouldClose(window))
     {
@@ -124,6 +143,9 @@ int main() {
         //初始化背景颜色
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+        //激活0号纹理插槽
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, textureId);
 
         // draw our first triangle
         GLCall(glUseProgram(renderId));
@@ -159,59 +181,37 @@ void createOpenglElement(unsigned  int * vaoId,unsigned int * vboId,unsigned int
                          float *vertex, int vertexLength, int * index, int indexLength)
 {
     cout << "createOpenglElement :" << "vertexLength:" <<vertexLength << ",indexLength :" <<indexLength<<endl;
+    std::cout << "createOpenglElement   指针长度 sizeof(vertexArray) : " <<  sizeof(vertex) << std::endl;
+    std::cout << "createOpenglElement   指针长度 sizeof(index ): " <<  sizeof(index) << std::endl;
+
+
+    //创建和绑定vao
     GLCall( glGenVertexArrays(1, vaoId));
-    GLCall( glGenBuffers(1, vboId));
-    GLCall( glGenBuffers(1, iboId));
-
-    //绑定VAO VBO 和EBO
     GLCall( glBindVertexArray( *vaoId));
-    std::cout << "createOpenglElement   sizeof(vertexArray) : " <<  sizeof(vertex) << std::endl;
-    GLCall(glBindBuffer(GL_ARRAY_BUFFER, *vboId));
-//glBufferData 函数第二个参数 指的是 顶点坐标的长度
-    GLCall(glBufferData(GL_ARRAY_BUFFER, (vertexLength )*sizeof(float) , (void *)vertex, GL_STATIC_DRAW));
 
-    std::cout << "initVertexConfiguration   sizeof(index : " <<  sizeof(index) << std::endl;
+    //创建和绑定vbo，并为VBO指定数据源长度
+    GLCall( glGenBuffers(1, vboId));
+    GLCall(glBindBuffer(GL_ARRAY_BUFFER, *vboId));
+    //glBufferData 函数第二个参数 指的是 顶点坐标的长度，一般是定义的顶点个数 * 每一个定的类型长度(sizeof (类型) )，顶点坐标类型一般是float
+    GLCall(glBufferData(GL_ARRAY_BUFFER,vertexLength  *sizeof(float) , (void *)vertex, GL_STATIC_DRAW));
+
+    //创建和绑定ibo并为IBO 指定具体数据源和长度
+    GLCall( glGenBuffers(1, iboId));
     GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *iboId));
     GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexLength *sizeof(float), index, GL_STATIC_DRAW));
 
+
+    //顶点坐标中包含了纹理 和 顶点坐标的
+
     //关键步骤，指定传递出去的数据之间的排列方式和数据大小 数据类型等
-    GLCall(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0));
+    GLCall(glVertexAttribPointer(0, 3, GL_FLOAT, GL_TRUE, 5 * sizeof(GLfloat), (void*)0));
     GLCall(glEnableVertexAttribArray(0));
+
+    //关键步骤，指定传递高gpu的顶点坐标数据中的纹理的位置，stride 等
+    GLCall(glVertexAttribPointer(1, 2, GL_FLOAT, GL_TRUE, 5 * sizeof(GLfloat), (void*)(3 * sizeof(float))));
+    GLCall(glEnableVertexAttribArray(1));
 
     //解绑
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 }
-
-
-
-
-
-
-
-//void initVertexConfiguration(float * vertexArray,int vertexArrayLength, int * index,int indexLength){
-//    //创建顶点缓存数组 VAO 顶点数组VBO 和元素缓存数组（元素缓存）EBO
-//    GLCall( glGenVertexArrays(1, &VAO));
-//    GLCall( glGenBuffers(1, &VBO));
-//    GLCall( glGenBuffers(1, &EBO));
-//
-//    //绑定VAO VBO 和EBO
-//    GLCall( glBindVertexArray(VAO));
-//    std::cout << "initVertexConfiguration   sizeof(vertexArray) : " <<  sizeof(vertexArray) << std::endl;
-//    GLCall(glBindBuffer(GL_ARRAY_BUFFER, VBO));
-////    GLCall(glBufferData(GL_ARRAY_BUFFER, sizeof(vertexArray) * sizeof(float), (void *)vertexArray, GL_STATIC_DRAW));
-////glBufferData 函数第二个参数 指的是 顶点坐标的长度
-//    GLCall(glBufferData(GL_ARRAY_BUFFER, vertexArrayLength, (void *)vertexArray, GL_STATIC_DRAW));
-//
-//    std::cout << "initVertexConfiguration   sizeof(index : " <<  sizeof(index) << std::endl;
-//    GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO));
-//    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexLength, index, GL_STATIC_DRAW));
-//
-//    //关键步骤，指定传递出去的数据之间的排列方式和数据大小 数据类型等
-//    GLCall(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0));
-//    GLCall(glEnableVertexAttribArray(0));
-//
-//    //解绑
-//    glBindBuffer(GL_ARRAY_BUFFER, 0);
-//    glBindVertexArray(0);
-//}
